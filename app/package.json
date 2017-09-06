@@ -12,9 +12,8 @@
         "body-parser": "~1.0.1",
         "express": "~4.0.0",
         "mongoose": "*",
-        "request":"^2.74.0",
+        "request":"^2.74.0"
     },
-
     "repository": {
         "type": "git",
         "url": "https://github.com/Gruppelli/crud_node_express_mongodb"
