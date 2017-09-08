@@ -40,6 +40,22 @@
     res.json({message:'Bem-Vindo a API'});
  });
 
+ router.route('/usuarios').post(function(req, res) {
+
+        var usuario = new Usuario();
+
+        //campos do usuario (que virá do request)
+        usuario.nome = req.body.nome;
+        usuario.login = req.body.login;
+        usuario.senha = req.body.senha;
+
+        usuario.save(function(error) {
+            if(error)
+                res.send(error);
+            res.json({ message: 'Usuário criado!' });
+        });
+    });
+
  /*Todas as rotas serão definidas com '/api' */
  app.use('/api',router);
 
@@ -50,10 +66,13 @@
 
  //Configuração Base da aplicação
 
- var Usuario = require('./app/models/usuario');
+ var Usuario = require('./models/usuario');
 
  var mongoose = require('mongoose');
- mongoose.connect('mongodb://admin:123456@ds127564.mlab.com:27564/node-api');
+
+ var DB_URI = 'mongodb://admin:123456@ds127564.mlab.com:27564/node-api';
+
+ mongoose.connect(DB_URI,{useMongoClient: true});
 
 
 
