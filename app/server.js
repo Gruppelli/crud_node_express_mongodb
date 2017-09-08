@@ -40,7 +40,7 @@
     res.json({message:'Bem-Vindo a API'});
  });
 
- router.route('/usuarios').post(function(req, res) {
+ router.route('/usuarios').post(function(req, res){
 
         var usuario = new Usuario();
 
@@ -54,7 +54,57 @@
                 res.send(error);
             res.json({ message: 'Usuário criado!' });
         });
-    });
+     });
+
+ router.route('/usuarios').get(function(req, res){
+
+     Usuario.find(function(err, usuarios){
+         if(err)
+             res.send(err);
+         res.json(usuarios);
+     })
+
+ });
+
+ router.route('/usuarios/:usuario_id').get(function(req,res){
+
+     Usuario.findById(req.params.usuario_id, function(error, usuario){
+         if(error)
+             res.send(error);
+         //Resposta
+         res.json(usuario);
+     });
+ });
+
+ router.route('/usuarios/:usuario_id').put(function(req,res) {
+
+     Usuario.findById(req.params.usuario_id, function(error, usuario) {
+         if(error)
+             res.send(error);
+         //Salva dados local
+         usuario.nome = req.body.nome;
+         usuario.login = req.body.login;
+         usuario.senha = req.body.senha;
+
+         //Salva no banco
+         usuario.save(function(error) {
+             if(error)
+                 res.send(error);
+
+             res.json({ message: 'Usuário Atualizado!' });
+         });
+     });
+ });
+
+ router.route('/usuarios/:usuario_id').delete(function(req,res) {
+
+     Usuario.remove({_id: req.params.usuario_id}, function(error) {
+         if(error)
+             res.send(error);
+
+         res.json({ message: 'Usuário excluído com Sucesso! '});
+     });
+ });
 
  /*Todas as rotas serão definidas com '/api' */
  app.use('/api',router);
@@ -71,8 +121,11 @@
  var mongoose = require('mongoose');
 
  var DB_URI = 'mongodb://admin:123456@ds127564.mlab.com:27564/node-api';
+ var options = { promiseLibrary: global.Promise, useMongoClient: true};
 
- mongoose.connect(DB_URI,{useMongoClient: true});
+ mongoose.Promise = global.Promise;
+
+ mongoose.connect(DB_URI,options);
 
 
 
