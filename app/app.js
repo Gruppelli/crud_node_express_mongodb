@@ -30,10 +30,10 @@
  var router = express.Router();
 
  /*Middlerware para usar em todos os requests enviados a API-Mensagem Padão */
- router.use(function(req,res,next){
+ /*router.use(function(req,res,next){
     console.log('Algo está acontecendo aqui.....');
     next();//próxima rota
- });
+ });*/
 
  /*Rota de teste */
  router.get('/', function(req,res){
